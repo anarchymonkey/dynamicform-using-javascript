@@ -1,0 +1,13 @@
+html,body{
+  text-align: center;
+  background-color: rgb(229, 231, 234);
+}
+#section2{
+  display: none;
+}
+
+.main-section h1{
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  text-shadow:5px 5px 16px black;
+}
