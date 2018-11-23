@@ -1,10 +1,11 @@
 /* INDUCING VARIABLES */
 var button = document.getElementById('btn1')
 var displayform = document.getElementById('section2');
+var i = 0;
 /* embedding form through javascript */
 var dispEmail = createEmail();
 var dispBox = createBox();
-displayform.innerHTML=
+displayform.innerHTML =
 '<label for="productname">Product Name</label><br>'
 +'<input type="text" class="form-control" name="productname" id="productname" value=""><br>'
 +'<label for="productprice">Product price</label><br>'
@@ -12,27 +13,26 @@ displayform.innerHTML=
 displayform.appendChild(dispEmail);
 displayform.appendChild(dispBox);
 displayform.innerHTML +=
-'<button onclick="add()" class="btn btn-danger btn-block">submit</button><br>'
+'<button onclick="add()" class="btn btn-danger btn-block" name="submit" id="submit">submit</button><br>'
 +'<button type="clear" name="clear" class="btn btn-primary btn-block" id="clear">clear</button>';
 
 /* ********************************************************************** */
+
 var ul = document.getElementById('ul');
 var productname = document.getElementById('productname');
 var productprice = document.getElementById('productprice');
 var productEmail = document.getElementById('productEmail');
 var productBox = document.getElementById('productBox');
-var productArray = {
-  name : "",
-  price : "",
-  email : "",
-  desc : ""
-};
-var prodName = [];
-var prodPrice = [];
-var prodEmail = [];
-var prodDesc = [];
+var productArr = [];
 var message = document.getElementById('error');
 var desc = document.getElementById('desc');
+var submit = document.getElementById('submit');
+var delId = -1; // so the id could startFrom 0;
+var editId = -1; // so the id could start from 0;
+var update;
+var labelEmail = document.getElementById('labelEmail');
+var labelBox = document.getElementById('labelBox');
+var li;
 /* EVENT LISTENER TIME */
 button.addEventListener("click",function(){
 
@@ -55,6 +55,7 @@ function createEmail()
   div.setAttribute('class','form-group');
   var label = document.createElement('label');
   label.setAttribute("for",'productEmail');
+  label.setAttribute('id','labelEmail');
   label.innerHTML = "Product Email<br>";
   var input = document.createElement('input');
   input.setAttribute('type','email');
@@ -77,6 +78,7 @@ function createBox()
 
  var label = document.createElement('label');
  label.setAttribute('for','productBox');
+ label.setAttribute('id','labelBox');
  label.innerHTML+='Product Descrption <br>';
  div.appendChild(label);
  var textarea = document.createElement('textarea');
@@ -90,24 +92,31 @@ function createBox()
 }
 /* ******************************************************* */
 
-
 /* validation of email */
 function validateEmail()
 {
   var email = productEmail.value;
-
-  if(email.indexOf('@') === -1 || email.indexOf('.com') === -1 && (email.lastIndexOf('@')>email.lastIndexOf('.com')))
+  var validatingConditions = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; // regular expressions for email
+  if (validatingConditions.test(email))
+  {
+    return true;
+  }
+  else if(email.indexOf('@') === -1 || email.indexOf('.com') === -1)
   {
     return false;
   }
-  else {
-    return true;
+  else if(email.lastIndexOf('@') > email.lastIndexOf('.com'))
+  {
+    console.log(email.lastIndexOf('@'));
+    console.log(email.lastIndexOf('.com'));
+    return false;
   }
-
-
+  else {
+    return false;
+  }
 }
 
-/* ************************************************************** */
+
 function add()
 {
   try
@@ -115,16 +124,30 @@ function add()
     if(isNaN(productname.value) && !isNaN(productprice.value) && validateEmail() == true)
     {
       /* INSERTING ELEMENTS IN KEY VALUE PAIR */
-      prodName.unshift(productname.value);
-      prodPrice.unshift(productprice.value);
-      prodEmail.unshift(productEmail.value);
-      prodDesc.unshift(productBox.value);
+
+      productArr.push(createObject(productname.value,productprice.value,productEmail.value,productBox.value));
+
       /* ******************************************************** */
-      productArray = {name:prodName,price:prodPrice,email:prodEmail,desc:prodDesc};
+
       /* ************************************************************ */
-        li = document.createElement("li");
-        li.appendChild(document.createTextNode(productArray.name[0]+"'s Price is Rs."+productArray.price[0]+" whose email is "+productArray.email[0]+" Has  Descrption :-  "+productArray.desc[0].substr(0,25)+"..."));
-        ul.appendChild(li);
+        var deleting = createDelete();
+        var editing = createEdit();
+          productArr[i].id = i;
+          var li = document.createElement("li");
+          li.setAttribute('id','li');
+          li.setAttribute('class','w3-animate-left container');
+          li.appendChild(document.createTextNode(productArr[i].name+"'s Price is Rs."+productArr[i].price+" whose email is "+productArr[i].email+" Has  Descrption :-  "+productArr[i].desc.substr(0,25)+"..."));
+          li.innerHTML += '<br>';
+          li.appendChild(editing);
+          li.appendChild(deleting);
+          ul.appendChild(li);
+          i++;
+
+          /* BASIC STYLING */
+          displayform.style.display = "none";
+          button.style.display = 'block';
+          /* ********************* */
+
 
     }
     else if(isNaN(productprice.value) || !isNaN(productname.value) || validateEmail() == false)
@@ -142,12 +165,104 @@ function add()
     ,5000);
   }
 };
+/* CREATING DELETE BUTTON */
+function createDelete()
+{
+  var deleteButton = document.createElement('button');
+  deleteButton.setAttribute('class','btn btn-danger');
+  deleteButton.setAttribute('name','delete');
+  deleteButton.setAttribute('id',delId);
+  deleteButton.setAttribute('style','margin:10px');
+  deleteButton.innerHTML = 'DELETE';
+  deleteButton.addEventListener('click',function(event){
+    var targetParent = event.target.parentNode;
+    removeArray(targetParent.id);
+    targetParent.parentNode.removeChild(targetParent); // li.ul.removeChild(li)
+    delId--;
+    i--;
+    });
+    delId++;
+  return deleteButton;
+}
 
+function createEdit()
+{
+  var edit = document.createElement('button');
+  edit.setAttribute('class','btn btn-warning');
+  edit.setAttribute('name','edit');
+  edit.setAttribute('id',editId);
+  edit.setAttribute('style','margin:10px');
+  edit.innerHTML = 'EDIT';
+  edit.addEventListener('click',function(event){
+    var targetParent = event.target.parentNode;
+    var index = event.target.id;
+    editForm(index);
+    editArray(index);
+
+  });
+  editId++;
+  return edit;
+}
+/* ************************************************************** */
+
+function createObject(prodName,prodPrice,prodEmail,prodDesc)
+{
+  var productArray = {name:prodName,price:prodPrice,email:prodEmail,desc:prodDesc};
+  return productArray;
+}
 validateEmail(); // calling because the below calling wont recognise validateEmail if not defined here , hoisting much xD
+createDelete();
+createEdit();
+
+function getIndex(id)
+{
+    for (var i = 0; i < productArr.length; i++)
+    {
+        if (productArr[i].Id == id)
+            return i;
+    }
+}
+
+function removeArray(index)
+{
+    productArr.splice(index,1);
+    console.log(productArr);
+}
+function editForm(index)
+{
+    submit.textContent = 'update';
+    submit.setAttribute('id','update');
+    button.style.display = 'none';
+    displayform.style.display = 'block';
+    productEmail.style.display = 'none';
+    productBox.style.display = 'none';
+    labelEmail.style.display = 'none';
+    labelBox.style.display = 'none';
+    update = document.getElementById('update');
+    update.setAttribute('onclick','editArray('+index+')');
+}
+
+function editArray(index)
+{
+  console.log(productArr[index].name);
+  console.log(productArr[index].price);
+
+  productArr[index].name = productname.value;
+  productArr[index].price = productprice.value;
+  li = document.getElementById('li');
+  console.log(li.parentElement.childNode);
+}
 /* CLEAR THE FORM AND BRING HOME THE BUTTON */
 clear.addEventListener("click",function(){
   button.style.display = "block";
   displayform.style.display = "none";
   message.style.display = "none";
+  update.textContent = 'submit';
+  submit.setAttribute('onclick','add()');
+  labelEmail.style.display = 'block';
+  productEmail.style.display = 'block';
+  labelBox.style.display = 'block';
+  productBox.style.display = 'block';
+
 });
 /*  *************************************************** */
