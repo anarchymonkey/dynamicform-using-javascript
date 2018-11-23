@@ -1,7 +1,8 @@
 /* INDUCING VARIABLES */
 var button = document.getElementById('btn1')
 var displayform = document.getElementById('section2');
-var i = 0;
+var i = 1;
+var idx = 0;
 /* embedding form through javascript */
 var dispEmail = createEmail();
 var dispBox = createBox();
@@ -29,10 +30,12 @@ var desc = document.getElementById('desc');
 var submit = document.getElementById('submit');
 var delId = -1; // so the id could startFrom 0;
 var editId = -1; // so the id could start from 0;
+var l_id = 1;
 var update;
 var labelEmail = document.getElementById('labelEmail');
 var labelBox = document.getElementById('labelBox');
 var li;
+
 /* EVENT LISTENER TIME */
 button.addEventListener("click",function(){
 
@@ -132,17 +135,18 @@ function add()
       /* ************************************************************ */
         var deleting = createDelete();
         var editing = createEdit();
-          productArr[i].id = i;
           var li = document.createElement("li");
-          li.setAttribute('id','li');
+          li.setAttribute('id',l_id);
           li.setAttribute('class','w3-animate-left container');
-          li.appendChild(document.createTextNode(productArr[i].name+"'s Price is Rs."+productArr[i].price+" whose email is "+productArr[i].email+" Has  Descrption :-  "+productArr[i].desc.substr(0,25)+"..."));
+          li.appendChild(document.createTextNode(productArr[idx].name+"'s Price is Rs."+productArr[idx].price+" whose email is "+productArr[idx].email+" Has  Descrption :-  "+productArr[idx].desc+"..."));
           li.innerHTML += '<br>';
           li.appendChild(editing);
           li.appendChild(deleting);
           ul.appendChild(li);
-          i++;
-
+          idx++;
+          l_id++;
+          console.log('the id that is set for the next element is ',+i);
+          console.log(productArr);
           /* BASIC STYLING */
           displayform.style.display = "none";
           button.style.display = 'block';
@@ -165,23 +169,26 @@ function add()
     ,5000);
   }
 };
+
 /* CREATING DELETE BUTTON */
 function createDelete()
 {
   var deleteButton = document.createElement('button');
   deleteButton.setAttribute('class','btn btn-danger');
   deleteButton.setAttribute('name','delete');
-  deleteButton.setAttribute('id',delId);
+  deleteButton.setAttribute('id','delete');
   deleteButton.setAttribute('style','margin:10px');
   deleteButton.innerHTML = 'DELETE';
   deleteButton.addEventListener('click',function(event){
+
     var targetParent = event.target.parentNode;
-    removeArray(targetParent.id);
-    targetParent.parentNode.removeChild(targetParent); // li.ul.removeChild(li)
-    delId--;
-    i--;
-    });
-    delId++;
+    var index = getIndex(parseInt(targetParent.id));
+    console.log(index);
+    removeArray(index);
+    console.log(targetParent.parentNode);
+    targetParent.parentNode.removeChild(targetParent);
+    idx--;
+  });
   return deleteButton;
 }
 
@@ -190,24 +197,23 @@ function createEdit()
   var edit = document.createElement('button');
   edit.setAttribute('class','btn btn-warning');
   edit.setAttribute('name','edit');
-  edit.setAttribute('id',editId);
+  edit.setAttribute('id','edit');
   edit.setAttribute('style','margin:10px');
   edit.innerHTML = 'EDIT';
   edit.addEventListener('click',function(event){
-    var targetParent = event.target.parentNode;
-    var index = event.target.id;
-    editForm(index);
-    editArray(index);
 
+    var targetParent = event.target.parentNode;
+    var index = getIndex(parseInt(targetParent.id));
+    editForm(index);
   });
-  editId++;
   return edit;
 }
 /* ************************************************************** */
 
 function createObject(prodName,prodPrice,prodEmail,prodDesc)
 {
-  var productArray = {name:prodName,price:prodPrice,email:prodEmail,desc:prodDesc};
+  var productArray = {name:prodName,price:prodPrice,email:prodEmail,desc:prodDesc,id:i};
+  i++;
   return productArray;
 }
 validateEmail(); // calling because the below calling wont recognise validateEmail if not defined here , hoisting much xD
@@ -218,13 +224,15 @@ function getIndex(id)
 {
     for (var i = 0; i < productArr.length; i++)
     {
-        if (productArr[i].Id == id)
+        if (productArr[i].id == id)
+            console.log("the index to remove is given in return value "+ productArr[i].id);
             return i;
     }
 }
 
 function removeArray(index)
 {
+    console.log("the index to remove is given in return value "+ productArr[index].id);
     productArr.splice(index,1);
     console.log(productArr);
 }
@@ -246,11 +254,11 @@ function editArray(index)
 {
   console.log(productArr[index].name);
   console.log(productArr[index].price);
-
+  console.log("the index to edit is "+index);
   productArr[index].name = productname.value;
   productArr[index].price = productprice.value;
   li = document.getElementById('li');
-  console.log(li.parentElement.childNode);
+  //console.log(li.parentElement.childNode);
 }
 /* CLEAR THE FORM AND BRING HOME THE BUTTON */
 clear.addEventListener("click",function(){
