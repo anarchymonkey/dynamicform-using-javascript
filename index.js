@@ -4,14 +4,14 @@ var displayform = document.getElementById('section2');
 var i = 1;
 var idx = 0;
 /* embedding form through javascript */
-var dispEmail = createEmail();
+var dispQuantity = createQuantity();
 var dispBox = createBox();
 displayform.innerHTML =
 '<label for="productname">Product Name</label><br>'
 +'<input type="text" class="form-control" name="productname" id="productname" value=""><br>'
 +'<label for="productprice">Product price</label><br>'
 +'<input type="text" name="productprice" class="form-control" id="productprice" value=""><br>';
-displayform.appendChild(dispEmail);
+displayform.appendChild(dispQuantity);
 displayform.appendChild(dispBox);
 displayform.innerHTML +=
 '<button onclick="add()" class="btn btn-danger btn-block" name="submit" id="submit">submit</button><br>'
@@ -35,7 +35,7 @@ var update;
 var labelEmail = document.getElementById('labelEmail');
 var labelBox = document.getElementById('labelBox');
 var li;
-
+var data;
 /* EVENT LISTENER TIME */
 button.addEventListener("click",function(){
 
@@ -52,18 +52,18 @@ else {
 /* ******************************************************* */
 /* Creating Email setAttribute */
 
-function createEmail()
+function createQuantity()
 {
   var div = document.createElement('div');
   div.setAttribute('class','form-group');
   var label = document.createElement('label');
-  label.setAttribute("for",'productEmail');
+  label.setAttribute("for",'productquantity');
   label.setAttribute('id','labelEmail');
-  label.innerHTML = "Product Email<br>";
+  label.innerHTML = "Product Quantity<br>";
   var input = document.createElement('input');
-  input.setAttribute('type','email');
-  input.setAttribute('name','email');
-  input.setAttribute('id','productEmail');
+  input.setAttribute('type','text');
+  input.setAttribute('name','quantity');
+  input.setAttribute('id','productquantity');
   input.setAttribute('value','');
   input.setAttribute('class','form-control');
   div.appendChild(label);
@@ -96,7 +96,7 @@ function createBox()
 /* ******************************************************* */
 
 /* validation of email */
-function validateEmail()
+/*function validateEmail()
 {
   var email = productEmail.value;
   var validatingConditions = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; // regular expressions for email
@@ -118,17 +118,25 @@ function validateEmail()
     return false;
   }
 }
-
+*/
 
 function add()
 {
   try
   {
-    if(isNaN(productname.value) && !isNaN(productprice.value) && validateEmail() == true)
+    if(isNaN(productname.value) && !isNaN(productprice.value))
     {
       /* INSERTING ELEMENTS IN KEY VALUE PAIR */
 
-      productArr.push(createObject(productname.value,productprice.value,productEmail.value,productBox.value));
+      data = loadData();
+      for(var i = 0 ; i < data.length ;i++)
+      {
+        console.log(data[i]);
+      }
+      productArr.push(createObject(productname.value,productprice.value,productquantity.value,productBox.value));
+      console.log(data.length);
+      storeData();
+
 
       /* ******************************************************** */
 
@@ -138,7 +146,7 @@ function add()
           var li = document.createElement("li");
           li.setAttribute('id',l_id);
           li.setAttribute('class','w3-animate-left container');
-          li.appendChild(document.createTextNode(productArr[idx].name+"'s Price is Rs."+productArr[idx].price+" whose email is "+productArr[idx].email+" Has  Descrption :-  "+productArr[idx].desc+"..."));
+          li.appendChild(document.createTextNode(productArr[idx].name+"'s Price is Rs."+productArr[idx].price+" whose quantity is "+productArr[idx].quantity+" Has  Descrption :-  "+productArr[idx].desc+"..."));
           li.innerHTML += '<br>';
           li.appendChild(editing);
           li.appendChild(deleting);
@@ -154,7 +162,7 @@ function add()
 
 
     }
-    else if(isNaN(productprice.value) || !isNaN(productname.value) || validateEmail() == false)
+    else if(isNaN(productprice.value) || !isNaN(productname.value))
     {
       throw "Productprice should be a number and Product name should be a string and Email should have @ and after that .com";
     }
@@ -170,6 +178,27 @@ function add()
   }
 };
 
+function storeData()
+{
+  localStorage.productArr = JSON.stringify(productArr);
+}
+
+function loadData()
+{
+  if(!localStorage.productArr)
+  {
+    localStorage.productArr = JSON.stringify([]);
+  }
+
+  return JSON.parse(localStorage.productArr);
+}
+/* STORE IT INTO LOCAL STORAGE */
+
+//var parsedData = loadData();
+
+
+
+//console.log(parsedData);
 /* CREATING DELETE BUTTON */
 function createDelete()
 {
@@ -210,13 +239,12 @@ function createEdit()
 }
 /* ************************************************************** */
 
-function createObject(prodName,prodPrice,prodEmail,prodDesc)
+function createObject(prodName,prodPrice,prodquant,prodDesc)
 {
-  var productArray = {name:prodName,price:prodPrice,email:prodEmail,desc:prodDesc,id:i};
+  var productArray = {name:prodName,price:prodPrice,quantity:prodquant,desc:prodDesc,id:i};
   i++;
   return productArray;
 }
-validateEmail(); // calling because the below calling wont recognise validateEmail if not defined here , hoisting much xD
 createDelete();
 createEdit();
 
@@ -234,7 +262,6 @@ function removeArray(index)
 {
     console.log("the index to remove is given in return value "+ productArr[index].id);
     productArr.splice(index,1);
-    console.log(productArr);
 }
 function editForm(index)
 {
