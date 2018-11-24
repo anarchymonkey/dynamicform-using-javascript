@@ -50,76 +50,6 @@ else {
   }
 });
 /* ******************************************************* */
-/* Creating Email setAttribute */
-
-function createQuantity()
-{
-  var div = document.createElement('div');
-  div.setAttribute('class','form-group');
-  var label = document.createElement('label');
-  label.setAttribute("for",'productquantity');
-  label.setAttribute('id','labelEmail');
-  label.innerHTML = "Product Quantity<br>";
-  var input = document.createElement('input');
-  input.setAttribute('type','text');
-  input.setAttribute('name','quantity');
-  input.setAttribute('id','productquantity');
-  input.setAttribute('value','');
-  input.setAttribute('class','form-control');
-  div.appendChild(label);
-  div.appendChild(input);
-  return div;
-}
-/* Email Attribute Created */
-
-/* create a textbox element */
-
-function createBox()
-{
-  var div = document.createElement('div');
- div.setAttribute('class','form-group');
-
- var label = document.createElement('label');
- label.setAttribute('for','productBox');
- label.setAttribute('id','labelBox');
- label.innerHTML+='Product Descrption <br>';
- div.appendChild(label);
- var textarea = document.createElement('textarea');
- textarea.setAttribute('id','productBox');
- textarea.setAttribute('class','form-control');
- textarea.setAttribute('rows','10');
- textarea.setAttribute('cols','10');
- textarea.setAttribute('value','');
- div.appendChild(textarea);
- return div;
-}
-/* ******************************************************* */
-
-/* validation of email */
-/*function validateEmail()
-{
-  var email = productEmail.value;
-  var validatingConditions = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; // regular expressions for email
-  if (validatingConditions.test(email))
-  {
-    return true;
-  }
-  else if(email.indexOf('@') === -1 || email.indexOf('.com') === -1)
-  {
-    return false;
-  }
-  else if(email.lastIndexOf('@') > email.lastIndexOf('.com'))
-  {
-    console.log(email.lastIndexOf('@'));
-    console.log(email.lastIndexOf('.com'));
-    return false;
-  }
-  else {
-    return false;
-  }
-}
-*/
-
 function add()
 {
   try
@@ -199,6 +129,71 @@ function loadData()
 
 
 //console.log(parsedData);
+function getIndex(id)
+{
+  for (var i = 0; i < productArr.length; i++)
+  {
+    if (productArr[i].id == id)
+    console.log("the index to remove is given in return value "+ productArr[i].id);
+    return i;
+  }
+}
+
+function removeArray(index)
+{
+  console.log("the index to remove is given in return value "+ productArr[index].id);
+  productArr.splice(index,1);
+}
+function createObject(prodName,prodPrice,prodquant,prodDesc)
+{
+  var productArray = {name:prodName,price:prodPrice,quantity:prodquant,desc:prodDesc,id:i};
+  i++;
+  return productArray;
+}
+/* Creating Quantity setAttribute */
+
+function createQuantity()
+{
+  var div = document.createElement('div');
+  div.setAttribute('class','form-group');
+  var label = document.createElement('label');
+  label.setAttribute("for",'productquantity');
+  label.setAttribute('id','labelEmail');
+  label.innerHTML = "Product Quantity<br>";
+  var input = document.createElement('input');
+  input.setAttribute('type','text');
+  input.setAttribute('name','quantity');
+  input.setAttribute('id','productquantity');
+  input.setAttribute('value','');
+  input.setAttribute('class','form-control');
+  div.appendChild(label);
+  div.appendChild(input);
+  return div;
+}
+/* Email Attribute Created */
+
+/* create a textbox element */
+
+function createBox()
+{
+  var div = document.createElement('div');
+  div.setAttribute('class','form-group');
+
+  var label = document.createElement('label');
+  label.setAttribute('for','productBox');
+  label.setAttribute('id','labelBox');
+  label.innerHTML+='Product Descrption <br>';
+  div.appendChild(label);
+  var textarea = document.createElement('textarea');
+  textarea.setAttribute('id','productBox');
+  textarea.setAttribute('class','form-control');
+  textarea.setAttribute('rows','10');
+  textarea.setAttribute('cols','10');
+  textarea.setAttribute('value','');
+  div.appendChild(textarea);
+  return div;
+}
+/* ******************************************************* */
 /* CREATING DELETE BUTTON */
 function createDelete()
 {
@@ -239,37 +234,16 @@ function createEdit()
 }
 /* ************************************************************** */
 
-function createObject(prodName,prodPrice,prodquant,prodDesc)
-{
-  var productArray = {name:prodName,price:prodPrice,quantity:prodquant,desc:prodDesc,id:i};
-  i++;
-  return productArray;
-}
 createDelete();
 createEdit();
 
-function getIndex(id)
-{
-    for (var i = 0; i < productArr.length; i++)
-    {
-        if (productArr[i].id == id)
-            console.log("the index to remove is given in return value "+ productArr[i].id);
-            return i;
-    }
-}
-
-function removeArray(index)
-{
-    console.log("the index to remove is given in return value "+ productArr[index].id);
-    productArr.splice(index,1);
-}
 function editForm(index)
 {
     submit.textContent = 'update';
     submit.setAttribute('id','update');
     button.style.display = 'none';
     displayform.style.display = 'block';
-    productEmail.style.display = 'none';
+    productquantity.style.display = 'none';
     productBox.style.display = 'none';
     labelEmail.style.display = 'none';
     labelBox.style.display = 'none';
@@ -295,7 +269,7 @@ clear.addEventListener("click",function(){
   update.textContent = 'submit';
   submit.setAttribute('onclick','add()');
   labelEmail.style.display = 'block';
-  productEmail.style.display = 'block';
+  productquantity.style.display = 'block';
   labelBox.style.display = 'block';
   productBox.style.display = 'block';
 
