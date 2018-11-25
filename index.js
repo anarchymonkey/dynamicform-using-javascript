@@ -18,7 +18,6 @@ displayform.innerHTML +=
 +'<button type="clear" name="clear" class="btn btn-primary btn-block" id="clear">clear</button>';
 
 /* ********************************************************************** */
-
 var ul = document.getElementById('ul');
 var productname = document.getElementById('productname');
 var productprice = document.getElementById('productprice');
@@ -50,6 +49,26 @@ else {
   }
 });
 /* ******************************************************* */
+data = loadData();
+function load()
+{
+  while(idx < data.length)
+  {
+    productArr.push(data[i]);
+    var deleting = createDelete();
+    var editing = createEdit();
+    var li = document.createElement("li");
+    li.setAttribute('id',l_id);
+    li.setAttribute('class','w3-animate-left container');
+    li.appendChild(document.createTextNode(data[idx].name+"'s Price is Rs."+data[idx].price+" whose quantity is "+data[idx].quantity+" Has  Descrption :-  "+data[idx].desc+"..."));
+    li.innerHTML += '<br>';
+    li.appendChild(editing);
+    li.appendChild(deleting);
+    ul.appendChild(li);
+    idx++;
+    l_id++;
+  }
+}
 function add()
 {
   try
@@ -58,39 +77,12 @@ function add()
     {
       /* INSERTING ELEMENTS IN KEY VALUE PAIR */
 
-      data = loadData();
-      for(var i = 0 ; i < data.length ;i++)
-      {
-        console.log(data[i]);
-      }
       productArr.push(createObject(productname.value,productprice.value,productquantity.value,productBox.value));
-      console.log(data.length);
       storeData();
-
-
-      /* ******************************************************** */
-
-      /* ************************************************************ */
-        var deleting = createDelete();
-        var editing = createEdit();
-          var li = document.createElement("li");
-          li.setAttribute('id',l_id);
-          li.setAttribute('class','w3-animate-left container');
-          li.appendChild(document.createTextNode(productArr[idx].name+"'s Price is Rs."+productArr[idx].price+" whose quantity is "+productArr[idx].quantity+" Has  Descrption :-  "+productArr[idx].desc+"..."));
-          li.innerHTML += '<br>';
-          li.appendChild(editing);
-          li.appendChild(deleting);
-          ul.appendChild(li);
-          idx++;
-          l_id++;
-          console.log('the id that is set for the next element is ',+i);
-          console.log(productArr);
-          /* BASIC STYLING */
-          displayform.style.display = "none";
-          button.style.display = 'block';
-          /* ********************* */
-
-
+      data.push(productArr[idx]);
+      localStorage.setItem('productArr',JSON.stringify(data));
+      displayform.style.display = "none";
+      button.style.display = 'block';
     }
     else if(isNaN(productprice.value) || !isNaN(productname.value))
     {
@@ -101,13 +93,32 @@ function add()
   {
     message.style.display = "block";
     message.innerHTML = "<span class='w3-animate-top'>ERROR PLEASE REVIEW<br>"+err+"</span>";
-    setTimeout(function(){
-      message.style.display = "none";
-    }
-    ,5000);
+    setTimeout(function(){ message.style.display = "none";},1000);
+  }
+  finally
+  {
+    createList();
   }
 };
 
+function createList()
+{
+    if(data.length != 0)
+    {
+      var deleting = createDelete();
+      var editing = createEdit();
+      var li = document.createElement("li");
+      li.setAttribute('id',l_id);
+      li.setAttribute('class','w3-animate-left container');
+      li.appendChild(document.createTextNode(data[idx].name+"'s Price is Rs."+data[idx].price+" whose quantity is "+data[idx].quantity+" Has  Descrption :-  "+data[idx].desc+"..."));
+      li.innerHTML += '<br>';
+      li.appendChild(editing);
+      li.appendChild(deleting);
+      ul.appendChild(li);
+      idx++;
+      l_id++;
+    }
+  }
 function storeData()
 {
   localStorage.productArr = JSON.stringify(productArr);
@@ -134,15 +145,19 @@ function getIndex(id)
   for (var i = 0; i < productArr.length; i++)
   {
     if (productArr[i].id == id)
-    console.log("the index to remove is given in return value "+ productArr[i].id);
-    return i;
+    {
+        return i;
+    }
   }
 }
 
 function removeArray(index)
 {
-  console.log("the index to remove is given in return value "+ productArr[index].id);
   productArr.splice(index,1);
+  console.log("The index to delete is "+ index);
+  data.splice(index,1);
+  localStorage.setItem('productArr',JSON.stringify(data));
+
 }
 function createObject(prodName,prodPrice,prodquant,prodDesc)
 {
@@ -206,8 +221,9 @@ function createDelete()
   deleteButton.addEventListener('click',function(event){
 
     var targetParent = event.target.parentNode;
+    console.log("targetParent's id clicked is " +targetParent.id);
     var index = getIndex(parseInt(targetParent.id));
-    console.log(index);
+    console.log("The index of the id is ",index);
     removeArray(index);
     console.log(targetParent.parentNode);
     targetParent.parentNode.removeChild(targetParent);
@@ -249,6 +265,7 @@ function editForm(index)
     labelBox.style.display = 'none';
     update = document.getElementById('update');
     update.setAttribute('onclick','editArray('+index+')');
+    editArray(index);
 }
 
 function editArray(index)
@@ -258,7 +275,16 @@ function editArray(index)
   console.log("the index to edit is "+index);
   productArr[index].name = productname.value;
   productArr[index].price = productprice.value;
-  li = document.getElementById('li');
+  var deleting = createDelete();
+  var editing = createEdit();
+    var li = document.createElement("li");
+    li.setAttribute('id',index);
+    li.setAttribute('class','w3-animate-left container');
+    li.innerHTML = productArr[index].name+"'s Price is Rs."+productArr[index].price+" whose quantity is "+productArr[index].quantity+" Has  Descrption :-  "+productArr[index].desc+"...";
+    li.innerHTML += '<br>';
+    li.appendChild(editing);
+    li.appendChild(deleting);
+
   //console.log(li.parentElement.childNode);
 }
 /* CLEAR THE FORM AND BRING HOME THE BUTTON */
