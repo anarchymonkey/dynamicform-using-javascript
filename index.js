@@ -8,9 +8,9 @@ var dispQuantity = createQuantity();
 var dispBox = createBox();
 displayform.innerHTML =
 '<label for="productname">Product Name</label><br>'
-+'<input type="text" class="form-control" name="productname" id="productname" value=""><br>'
++'<input type="text" class="form-control" name="productname" id="productname" value="" required><br>'
 +'<label for="productprice">Product price</label><br>'
-+'<input type="text" name="productprice" class="form-control" id="productprice" value=""><br>';
++'<input type="text" name="productprice" class="form-control" id="productprice" value=""required><br>';
 displayform.appendChild(dispQuantity);
 displayform.appendChild(dispBox);
 displayform.innerHTML +=
@@ -76,7 +76,7 @@ function add()
 {
   try
   {
-    if(isNaN(productname.value) && !isNaN(productprice.value))
+    if(isNaN(productname.value) && !isNaN(productprice.value) && productprice.value != '')
     {
       /* INSERTING ELEMENTS IN KEY VALUE PAIR */
 
@@ -299,17 +299,18 @@ function createSearch()
   search.setAttribute('class','form-control');
   search.setAttribute('placeholder','search here :P');
   search.addEventListener('keypress',function(key){
-    for(var i = 0 ; i < productArr.length ; i++)
+    for (var i = 0 ; i < productArr.length ; i++)
   {
-    if(productArr[i].name.includes(key['key'])){
-        console.log(productArr[i]);
-
+    if(productArr[i].name.includes(key['key']))
+    {
+      console.log(ul.children[i].textContent)
+    }
   }
-}
   });
   div.appendChild(search);
   return div;
 }
+
 createDelete();
 createEdit();
 /*  *************************************************** */
