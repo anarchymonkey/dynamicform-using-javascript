@@ -1,6 +1,14 @@
 html,body{
-  text-align: center;
   background-color: rgb(229, 231, 234);
+  text-align: center;
+  background-attachment: fixed;
+}
+li,ul
+{
+  background-color: rgb(88, 98, 114);
+  font: italic 1em Georgia, Times, serif;
+  line-height: 1.5em;
+  color : white;
 }
 #section2{
   display: none;
@@ -10,4 +18,17 @@ html,body{
   font-family: 'Roboto', sans-serif;
   font-weight: bold;
   text-shadow:5px 5px 16px black;
+}
+
+#section3
+{
+  border: 1px solid black;
+  box-sizing:border-box;
+  position: relative;
+}
+
+#ul
+{
+  list-style-type:none;
+
 }

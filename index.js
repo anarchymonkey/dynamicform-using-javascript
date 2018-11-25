@@ -243,15 +243,15 @@ function createEdit()
   edit.addEventListener('click',function(event){
 
     var targetParent = event.target.parentNode;
+    console.log("targetParent's id clicked is " +targetParent.id);
     var index = getIndex(parseInt(targetParent.id));
+    console.log("The index that is clicked is " + index);
     editForm(index);
   });
   return edit;
 }
 /* ************************************************************** */
 
-createDelete();
-createEdit();
 
 function editForm(index)
 {
@@ -265,27 +265,11 @@ function editForm(index)
     labelBox.style.display = 'none';
     update = document.getElementById('update');
     update.setAttribute('onclick','editArray('+index+')');
-    editArray(index);
 }
 
 function editArray(index)
 {
-  console.log(productArr[index].name);
-  console.log(productArr[index].price);
-  console.log("the index to edit is "+index);
-  productArr[index].name = productname.value;
-  productArr[index].price = productprice.value;
-  var deleting = createDelete();
-  var editing = createEdit();
-    var li = document.createElement("li");
-    li.setAttribute('id',index);
-    li.setAttribute('class','w3-animate-left container');
-    li.innerHTML = productArr[index].name+"'s Price is Rs."+productArr[index].price+" whose quantity is "+productArr[index].quantity+" Has  Descrption :-  "+productArr[index].desc+"...";
-    li.innerHTML += '<br>';
-    li.appendChild(editing);
-    li.appendChild(deleting);
-
-  //console.log(li.parentElement.childNode);
+  alert("ehey");
 }
 /* CLEAR THE FORM AND BRING HOME THE BUTTON */
 clear.addEventListener("click",function(){
@@ -300,4 +284,6 @@ clear.addEventListener("click",function(){
   productBox.style.display = 'block';
 
 });
+createDelete();
+createEdit();
 /*  *************************************************** */
