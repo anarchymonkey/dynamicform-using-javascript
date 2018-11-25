@@ -227,7 +227,6 @@ function createDelete()
     console.log(targetParent.parentNode);
     targetParent.parentNode.removeChild(targetParent);
     idx--;
-    l_id--;
   });
   return deleteButton;
 }
