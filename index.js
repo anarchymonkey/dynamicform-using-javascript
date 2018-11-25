@@ -35,6 +35,9 @@ var labelEmail = document.getElementById('labelEmail');
 var labelBox = document.getElementById('labelBox');
 var li;
 var data;
+var search = createSearch();
+var searchArea = document.getElementById('searchArea');
+searchArea.appendChild(search);
 /* EVENT LISTENER TIME */
 button.addEventListener("click",function(){
 
@@ -54,7 +57,7 @@ function load()
 {
   while(idx < data.length)
   {
-    productArr.push(data[i]);
+    productArr.push(data[idx]);
     var deleting = createDelete();
     var editing = createEdit();
     var li = document.createElement("li");
@@ -81,6 +84,7 @@ function add()
       storeData();
       data.push(productArr[idx]);
       localStorage.setItem('productArr',JSON.stringify(data));
+      createList();
       displayform.style.display = "none";
       button.style.display = 'block';
     }
@@ -94,10 +98,6 @@ function add()
     message.style.display = "block";
     message.innerHTML = "<span class='w3-animate-top'>ERROR PLEASE REVIEW<br>"+err+"</span>";
     setTimeout(function(){ message.style.display = "none";},1000);
-  }
-  finally
-  {
-    createList();
   }
 };
 
@@ -161,8 +161,7 @@ function removeArray(index)
 }
 function createObject(prodName,prodPrice,prodquant,prodDesc)
 {
-  var productArray = {name:prodName,price:prodPrice,quantity:prodquant,desc:prodDesc,id:i};
-  i++;
+  var productArray = {name:prodName,price:prodPrice,quantity:prodquant,desc:prodDesc,id:l_id};
   return productArray;
 }
 /* Creating Quantity setAttribute */
@@ -228,6 +227,7 @@ function createDelete()
     console.log(targetParent.parentNode);
     targetParent.parentNode.removeChild(targetParent);
     idx--;
+    l_id--;
   });
   return deleteButton;
 }
@@ -284,6 +284,33 @@ clear.addEventListener("click",function(){
   productBox.style.display = 'block';
 
 });
+
+function createSearch()
+{
+  var div = document.createElement('div');
+  div.setAttribute('class','form-group');
+  var label = document.createElement('label');
+  label.setAttribute('for','search');
+  label.innerHTML = 'Search';
+  div.appendChild(label);
+  var search = document.createElement('input');
+  search.setAttribute('type','text');
+  search.setAttribute('name','search');
+  search.setAttribute('id','search');
+  search.setAttribute('class','form-control');
+  search.setAttribute('placeholder','search here :P');
+  search.addEventListener('keypress',function(key){
+    for(var i = 0 ; i < productArr.length ; i++)
+  {
+    if(productArr[i].name.includes(key['key'])){
+        console.log(productArr[i]);
+
+  }
+}
+  });
+  div.appendChild(search);
+  return div;
+}
 createDelete();
 createEdit();
 /*  *************************************************** */
