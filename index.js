@@ -281,6 +281,7 @@ function editArray(index)
   data[index].name = productname.value;
   localStorage.setItem('productArr',JSON.stringify(data));
   productArr[index].name = productname.name;
+  window.location.reload();
 
 
 }

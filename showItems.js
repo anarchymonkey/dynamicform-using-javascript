@@ -6,13 +6,15 @@ var reqIndex;
 var ind;
 var display;
 var orders = [];
+var add;
+var minus;
 var data = JSON.parse(localStorage.productArr);
 ul = document.createElement('ul');
 ul.setAttribute('id','ul');
 for(var i = 0 ; i < data.length ; i++)
 {
-  var aCart = addToCart();
   var create = createCounter();
+  var aCart = addToCart();
   li = document.createElement('li');
   li.setAttribute('id',data[i].id);
   li.innerHTML += '<br>';
@@ -26,7 +28,7 @@ for(var i = 0 ; i < data.length ; i++)
 
 function createCounter()
 { var span = document.createElement('span');
-  var add = document.createElement('button');
+   add = document.createElement('button');
   add.setAttribute('id','add');
   add.setAttribute('class','btn')
   add.innerHTML = 'add';
@@ -36,7 +38,7 @@ function createCounter()
   display.setAttribute('class','form-control');
   display.setAttribute('name','counter');
   display.setAttribute('id','counter');
-  var minus = document.createElement('button');
+   minus = document.createElement('button');
   minus.setAttribute('id','minus');
   minus.setAttribute('class','btn');
   minus.innerHTML = 'minus';
@@ -66,7 +68,9 @@ function createCounter()
 
   minus.addEventListener('click',function(event){
     var targetParent = event.target.parentNode.parentNode;
-    var index = targetParent.id
+    var index = targetParent.id;
+
+    console.log("The index is ",index);
 
     for(var i = 0 ; i < data.length ; i++)
     {
@@ -78,11 +82,13 @@ function createCounter()
     if(parseInt(display.value) <= 0)
     {
 
-    }
+      }
     else {
       display.value--;
     }
+    console.log(data[ind].quantity);
   });
+
   span.appendChild(add);
   span.appendChild(display);
   span.appendChild(minus);
