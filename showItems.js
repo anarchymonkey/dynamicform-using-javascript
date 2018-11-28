@@ -4,18 +4,22 @@ var ul;
 var lid = 1;
 var reqIndex;
 var ind;
+var display;
+var orders = [];
 var data = JSON.parse(localStorage.productArr);
 ul = document.createElement('ul');
 ul.setAttribute('id','ul');
 for(var i = 0 ; i < data.length ; i++)
 {
+  var aCart = addToCart();
   var create = createCounter();
   li = document.createElement('li');
   li.setAttribute('id',data[i].id);
   li.innerHTML += '<br>';
   li.appendChild(document.createTextNode(data[i].name + "  " + data[i].price+" "));
   li.innerHTML += '<br>';
-  li.appendChild(create);
+  li.appendChild(create)
+  li.appendChild(aCart);
   ul.appendChild(li);
   showItems.appendChild(ul);
 }
@@ -26,7 +30,7 @@ function createCounter()
   add.setAttribute('id','add');
   add.setAttribute('class','btn')
   add.innerHTML = 'add';
-  var display = document.createElement('input');
+  display = document.createElement('input');
   display.setAttribute('type','text');
   display.setAttribute('value','0');
   display.setAttribute('class','form-control');
@@ -90,16 +94,28 @@ function createCounter()
 
 function addToCart()
 {
+  var addCart = document.createElement('button');
+  addCart.setAttribute('id','cart');
+  addCart.innerHTML += 'Add To Cart';
+  addCart.addEventListener('click',function(event){
 
+      var targetParent = event.target.parentNode;
+      var index = targetParent.id;
+      var getIndex;
+
+      for(var i = 0 ; i < data.length ; i++)
+      {
+        if(data[i].id == index)
+        {
+            getIndex = i;
+        }
+      }
+      console.log("the index that we got is "+ getIndex);
+      var createObject = {name : data[getIndex].name , price : data[getIndex].price}
+      orders.push(createObject);
+      //data[getIndex].quantity =
+      console.log("quantity left is " + (data[getIndex].quantity - display.value));
+  });
+
+  return addCart;
 }
-
-/*
-4
-5
-0 1
-1 2
-0 2
-2 3
-0 3
-0
-*/

@@ -55,13 +55,15 @@ else {
 data = loadData();
 function load()
 {
+  if(data.length != 0)
+  {
   while(idx < data.length)
   {
     productArr.push(data[idx]);
     var deleting = createDelete();
     var editing = createEdit();
     var li = document.createElement("li");
-    li.setAttribute('id',l_id);
+    li.setAttribute('id',data[idx].id);
     li.setAttribute('class','w3-animate-left container');
     li.appendChild(document.createTextNode(data[idx].name+"'s Price is Rs."+data[idx].price+" whose quantity is "+data[idx].quantity+" Has  Descrption :-  "+data[idx].desc+"..."));
     li.innerHTML += '<br>';
@@ -69,8 +71,12 @@ function load()
     li.appendChild(deleting);
     ul.appendChild(li);
     idx++;
-    l_id++;
+    l_id = data[idx].id+1;
   }
+}
+else {
+    alert("DATA LOADED");
+}
 }
 function add()
 {
@@ -263,12 +269,20 @@ function editForm(index)
     labelEmail.style.display = 'none';
     labelBox.style.display = 'none';
     update = document.getElementById('update');
+
+    console.log("THE INDEX IN EDIT FORM IS",index);
     update.setAttribute('onclick','editArray('+index+')');
 }
 
 function editArray(index)
 {
-  alert("ehey");
+  console.log("The index edited after clicking is "+ index);
+
+  data[index].name = productname.value;
+  localStorage.setItem('productArr',JSON.stringify(data));
+  productArr[index].name = productname.name;
+
+
 }
 /* CLEAR THE FORM AND BRING HOME THE BUTTON */
 clear.addEventListener("click",function(){
