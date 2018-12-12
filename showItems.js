@@ -1,107 +1,125 @@
 var showItems = document.getElementById('showitems');
-var li;
+var a;
 var ul;
 var lid = 1;
 var reqIndex;
 var ind;
 var display;
 var orders = [];
-var add;
-var minus;
+var styleDiv = document.createElement('div');
+styleDiv.setAttribute('class','row');
 var data = JSON.parse(localStorage.productArr);
-ul = document.createElement('ul');
-ul.setAttribute('id','ul');
 for(var i = 0 ; i < data.length ; i++)
 {
-  var create = createCounter();
+
+  var styleCol = document.createElement('div');
+  styleCol.setAttribute('class','col-md-4 col-md-offset-2');
+  var add = createadd();
+  var minus = createminus();
+  var show = view(data[i].id);
   var aCart = addToCart();
-  li = document.createElement('li');
-  li.setAttribute('id',data[i].id);
-  li.innerHTML += '<br>';
-  li.appendChild(document.createTextNode(data[i].name + "  " + data[i].price+" "));
-  li.innerHTML += '<br>';
-  li.appendChild(create)
-  li.appendChild(aCart);
-  ul.appendChild(li);
-  showItems.appendChild(ul);
+  a = document.createElement('a');
+  a.setAttribute('id',data[i].id);
+  a.innerHTML += '<br>';
+  a.appendChild(document.createTextNode("Name : " + data[i].name));
+  a.innerHTML +='<br>';
+  a.appendChild(document.createTextNode("Price : " + data[i].price+" "));
+  a.innerHTML += '<br>';
+  a.appendChild(add);
+  a.appendChild(show);
+  a.appendChild(minus);
+  a.innerHTML += '<br>';
+  a.appendChild(aCart);
+  styleCol.appendChild(a);
+  styleDiv.appendChild(styleCol);
+  showItems.appendChild(styleDiv);
 }
 
-function createCounter()
-{ var span = document.createElement('span');
-   add = document.createElement('button');
-  add.setAttribute('id','add');
-  add.setAttribute('class','btn')
-  add.innerHTML = 'add';
+
+function createadd()
+{
+  var add = document.createElement('button');
+  add.setAttribute('class','add-button');
+  add.innerHTML += '+';
+  return add;
+}
+function createminus()
+{
+  var minus = document.createElement('button');
+  minus.setAttribute('class','minus-btn');
+  minus.innerHTML += '-';
+  return minus;
+}
+function view(id)
+{
   display = document.createElement('input');
   display.setAttribute('type','text');
   display.setAttribute('value','0');
   display.setAttribute('class','form-control');
-  display.setAttribute('name','counter');
-  display.setAttribute('id','counter');
-   minus = document.createElement('button');
-  minus.setAttribute('id','minus');
-  minus.setAttribute('class','btn');
-  minus.innerHTML = 'minus';
-
-  add.addEventListener('click',function(event)
-  {
-
-    var targetParent = event.target.parentNode.parentNode;
-    var index = targetParent.id
-
-    for(var i = 0 ; i < data.length ; i++)
+  display.setAttribute('name',id);
+  display.setAttribute('id',id);
+  display.addEventListener('keypress',function(textValue){
+    if(textValue.which == 13)
     {
-      if(data[i].id == index)
-      {
-        reqIndex = i;
-      }
-    }
-    if(parseInt(display.value) == data[reqIndex].quantity)
-    {
-
-    }
-    else {
-      display.value++;
+      display.value = this.value;
     }
   });
-
-
-  minus.addEventListener('click',function(event){
-    var targetParent = event.target.parentNode.parentNode;
-    var index = targetParent.id;
-
-    console.log("The index is ",index);
-
-    for(var i = 0 ; i < data.length ; i++)
-    {
-      if(data[i].id == index)
-      {
-        ind = i;
-      }
-    }
-    if(parseInt(display.value) <= 0)
-    {
-
-      }
-    else {
-      display.value--;
-    }
-    console.log(data[ind].quantity);
-  });
-
-  span.appendChild(add);
-  span.appendChild(display);
-  span.appendChild(minus);
-
-  return span;
-
+  return display;
 }
 
+$('.minus-btn').on("click",function(event){
+  event.preventDefault();
+  var $this = $(this);
+  var $input = $this.closest('a').find('input');
+  var value = parseInt($input.val());
 
+  if(value > 0)
+  {
+    value = value - 1;
+  }
+  else {
+    value = 0;
+  }
+
+  $input.val(value);
+
+  $('.')
+});
+
+$('.add-button').on('click',function(event){
+  event.stopPropagation();
+  var $input = $(this).closest('a').find('input');
+  var value = parseInt($input.val());
+  var id = event.target.parentNode.id;
+  var index = parseInt(getIndex(id));
+  if(value < data[index].quantity)
+  {
+    value = value + 1;
+  }
+  else {
+    value = 0;
+  }
+
+  $input.val(value);
+  display.value = value;
+
+});
+
+function getIndex(id)
+{
+  for(var i = 0 ; i < data.length ; i++)
+  {
+    if(data[i].id == id)
+    {
+      return i;
+    }
+  }
+}
 function addToCart()
 {
   var addCart = document.createElement('button');
   addCart.setAttribute('id','cart');
+  addCart.setAttribute('class','btn btn-success');
   addCart.innerHTML += 'Add To Cart';
   addCart.addEventListener('click',function(event){
 
@@ -119,7 +137,7 @@ function addToCart()
       console.log("the index that we got is "+ getIndex);
       var createObject = {name : data[getIndex].name , price : data[getIndex].price}
       orders.push(createObject);
-      //data[getIndex].quantity =
+      console.log("The vlaue is "+ display.value);
       console.log("quantity left is " + (data[getIndex].quantity - display.value));
   });
 
