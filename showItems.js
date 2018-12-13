@@ -136,10 +136,13 @@ function addToCart()
         }
       }
       console.log("the index that we got is "+ getIndex);
-      var createObject = {name : data[getIndex].name , price : data[getIndex].price, quantity : data[getIndex].quantity};
+      var createObject = {name : data[getIndex].name , price : data[getIndex].price, quantity : display.value};
       orders.push(createObject);
       console.log("The vlaue is "+ display.value);
-      cartPic.textContent++;
+      if(display.value > 0)
+      {
+        cartPic.textContent++;
+      }
       console.log("quantity left is " + (data[getIndex].quantity - display.value));
   });
 
