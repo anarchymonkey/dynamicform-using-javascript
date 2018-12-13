@@ -32,3 +32,8 @@ li,ul
   list-style-type:none;
 
 }
+#hamburger
+{
+  float: left;
+  transition: 0.3s;
+}
