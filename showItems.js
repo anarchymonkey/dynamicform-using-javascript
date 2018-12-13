@@ -1,3 +1,4 @@
+var cartPic = document.getElementById('cartPic');
 var showItems = document.getElementById('showitems');
 var a;
 var ul;
@@ -135,9 +136,10 @@ function addToCart()
         }
       }
       console.log("the index that we got is "+ getIndex);
-      var createObject = {name : data[getIndex].name , price : data[getIndex].price}
+      var createObject = {name : data[getIndex].name , price : data[getIndex].price, quantity : data[getIndex].quantity};
       orders.push(createObject);
       console.log("The vlaue is "+ display.value);
+      cartPic.textContent++;
       console.log("quantity left is " + (data[getIndex].quantity - display.value));
   });
 

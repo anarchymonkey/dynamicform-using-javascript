@@ -44,3 +44,17 @@
   box-shadow: none;
   text-decoration: none;
 }
+
+.fa
+{
+  float: right;
+  font-size: 50px;
+  padding-right: 1.5em;
+  margin-top: 0.5em;
+}
+#Heading{
+  text-align: center;
+  letter-spacing: 10px;
+  text-decoration: underline;
+  text-shadow: 1px 1px 5px;
+}
