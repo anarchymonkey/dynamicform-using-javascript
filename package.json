@@ -1,0 +1,30 @@
+{
+  "name": "dynamicform-using-javascript",
+  "version": "1.0.0",
+  "description": "a simple shopping cart application",
+  "main": "app.js",
+  "scripts": {
+    "test": "nodemon app.js , node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anarchymonkey/dynamicform-using-javascript.git"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "mongoDb"
+  ],
+  "author": "Aniket Batabyal (anarchymonkey)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/anarchymonkey/dynamicform-using-javascript/issues"
+  },
+  "homepage": "https://github.com/anarchymonkey/dynamicform-using-javascript#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.0"
+  }
+}
