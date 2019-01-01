@@ -6,12 +6,14 @@ var idx = 0;
 /* embedding form through javascript */
 var dispQuantity = createQuantity();
 var dispBox = createBox();
+var gst1 = createGst();
 displayform.innerHTML =
 '<label for="productname">Product Name</label><br>'
 +'<input type="text" class="form-control" name="productname" id="productname" value="" required><br>'
 +'<label for="productprice">Product price</label><br>'
 +'<input type="text" name="productprice" class="form-control" id="productprice" value=""required><br>';
 displayform.appendChild(dispQuantity);
+displayform.appendChild(gst1);
 displayform.appendChild(dispBox);
 displayform.innerHTML +=
 '<button onclick="add()" class="btn btn-danger btn-block" name="submit" id="submit">submit</button><br>'
@@ -23,6 +25,8 @@ var productname = document.getElementById('productname');
 var productprice = document.getElementById('productprice');
 var productEmail = document.getElementById('productEmail');
 var productBox = document.getElementById('productBox');
+var productquantity = document.getElementById('productquantity');
+var productGst = document.getElementById('gst');
 var productArr = [];
 var message = document.getElementById('error');
 var desc = document.getElementById('desc');
@@ -31,7 +35,7 @@ var delId = -1; // so the id could startFrom 0;
 var editId = -1; // so the id could start from 0;
 var l_id = 1;
 var update;
-var labelEmail = document.getElementById('labelEmail');
+var labelquantity = document.getElementById('labelquantity');
 var labelBox = document.getElementById('labelBox');
 var li;
 var data;
@@ -70,8 +74,8 @@ function load()
     li.appendChild(editing);
     li.appendChild(deleting);
     ul.appendChild(li);
-    idx++;
     l_id = data[idx].id+1;
+    idx++;
   }
 }
 else {
@@ -86,7 +90,7 @@ function add()
     {
       /* INSERTING ELEMENTS IN KEY VALUE PAIR */
 
-      productArr.push(createObject(productname.value,productprice.value,productquantity.value,productBox.value));
+      productArr.push(createObject(productname.value,productprice.value,productquantity.value,productBox.value,productGst.value));
       storeData();
       data.push(productArr[idx]);
       localStorage.setItem('productArr',JSON.stringify(data));
@@ -165,9 +169,9 @@ function removeArray(index)
   localStorage.setItem('productArr',JSON.stringify(data));
 
 }
-function createObject(prodName,prodPrice,prodquant,prodDesc)
+function createObject(prodName,prodPrice,prodquant,prodDesc,gst)
 {
-  var productArray = {name:prodName,price:prodPrice,quantity:prodquant,desc:prodDesc,id:l_id};
+  var productArray = {name:prodName,price:prodPrice,quantity:prodquant,desc:prodDesc,gst:gst,id:l_id};
   return productArray;
 }
 /* Creating Quantity setAttribute */
@@ -178,7 +182,7 @@ function createQuantity()
   div.setAttribute('class','form-group');
   var label = document.createElement('label');
   label.setAttribute("for",'productquantity');
-  label.setAttribute('id','labelEmail');
+  label.setAttribute('id','labelquantity');
   label.innerHTML = "Product Quantity<br>";
   var input = document.createElement('input');
   input.setAttribute('type','text');
@@ -190,15 +194,31 @@ function createQuantity()
   div.appendChild(input);
   return div;
 }
-/* Email Attribute Created */
-
+/*  Attribute Created */
+function createGst(){
+  var div = document.createElement('div');
+  div.setAttribute('class','form-group');
+  var label = document.createElement('label');
+  label.setAttribute('id','labelgst');
+  label.innerHTML += 'Gst';
+  var gst = document.createElement('input');
+  gst.setAttribute('type','text');
+  gst.setAttribute('id','gst');
+  gst.setAttribute('name','gst');
+  gst.setAttribute('min-value','1.00');
+  gst.setAttribute('step','1.00');
+  gst.setAttribute('class','form-control');
+  label.setAttribute("for",'gst');
+  div.appendChild(label);
+  div.appendChild(gst);
+  return div;
+}
 /* create a textbox element */
 
 function createBox()
 {
   var div = document.createElement('div');
   div.setAttribute('class','form-group');
-
   var label = document.createElement('label');
   label.setAttribute('for','productBox');
   label.setAttribute('id','labelBox');
@@ -264,10 +284,9 @@ function editForm(index)
     submit.setAttribute('id','update');
     button.style.display = 'none';
     displayform.style.display = 'block';
-    productquantity.style.display = 'none';
-    productBox.style.display = 'none';
-    labelEmail.style.display = 'none';
-    labelBox.style.display = 'none';
+    productquantity.style.display = 'block';
+    productprice.style.display = 'block';
+    gst.style.display = 'block';
     update = document.getElementById('update');
 
     console.log("THE INDEX IN EDIT FORM IS",index);
@@ -279,6 +298,9 @@ function editArray(index)
   console.log("The index edited after clicking is "+ index);
 
   data[index].name = productname.value;
+  data[index].price = productprice.value;
+  data[index].quantity = productquantity.value;
+  data[index].gst = productGst.value;
   localStorage.setItem('productArr',JSON.stringify(data));
   productArr[index].name = productname.name;
   window.location.reload();
@@ -292,10 +314,8 @@ clear.addEventListener("click",function(){
   message.style.display = "none";
   update.textContent = 'submit';
   submit.setAttribute('onclick','add()');
-  labelEmail.style.display = 'block';
+  labelquantity.style.display = 'block';
   productquantity.style.display = 'block';
-  labelBox.style.display = 'block';
-  productBox.style.display = 'block';
 
 });
 

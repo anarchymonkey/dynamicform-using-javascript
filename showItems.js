@@ -136,8 +136,9 @@ function addToCart()
         }
       }
       console.log("the index that we got is "+ getIndex);
-      var createObject = {name : data[getIndex].name , price : data[getIndex].price, quantity : display.value};
+      var createObject = {name : data[getIndex].name , price : data[getIndex].price, quantity : display.value, gst : data[getIndex].gst};
       orders.push(createObject);
+      storeData();
       console.log("The vlaue is "+ display.value);
       if(display.value > 0)
       {
@@ -147,4 +148,18 @@ function addToCart()
   });
 
   return addCart;
+}
+
+function storeData(){
+
+  localStorage.orders = JSON.stringify(orders);
+}
+
+function loadData()
+{
+  if(!localStorage.orders)
+  {
+    localStorage.orders = JSON.stringify([]);
+  }
+  return JSON.parse(localStorage.orders);
 }
