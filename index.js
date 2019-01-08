@@ -55,8 +55,11 @@ else {
   button.style.display = "block";
   }
 });
+
 /* ******************************************************* */
+
 data = loadData();
+
 function load()
 {
   if(data.length != 0)
@@ -82,6 +85,7 @@ else {
     alert("DATA LOADED");
 }
 }
+
 function add()
 {
   try
@@ -280,6 +284,11 @@ function createEdit()
 
 function editForm(index)
 {
+    productname.value = data[index].name;
+    productprice.value = data[index].price;
+    productGst.value = data[index].gst;
+    productquantity.value = data[index].quantity;
+    productBox.value = data[index].desc;
     submit.textContent = 'update';
     submit.setAttribute('id','update');
     button.style.display = 'none';

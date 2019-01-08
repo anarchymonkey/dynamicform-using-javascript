@@ -136,10 +136,11 @@ function addToCart()
         }
       }
       console.log("the index that we got is "+ getIndex);
-      var createObject = {name : data[getIndex].name , price : data[getIndex].price, quantity : display.value, gst : data[getIndex].gst};
+      console.log("The value is " + event.target.parentNode.childNodes[6].value);
+      var fetchedValue = event.target.parentNode.childNodes[6].value;
+      var createObject = {name : data[getIndex].name , price : data[getIndex].price, quantity : fetchedValue, gst : data[getIndex].gst , id : data[getIndex].id };
       orders.push(createObject);
       storeData();
-      console.log("The vlaue is "+ display.value);
       if(display.value > 0)
       {
         cartPic.textContent++;

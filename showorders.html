@@ -4,10 +4,54 @@
     <meta charset="utf-8">
     <title>My Cart</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" type="text/css" href="showorders.css">
   </head>
   <body>
-    <h1>Welcome to your cart</h1>
-    <div class="well">
+    <!-- This is the hamburger menu bar -->
+    <div class="w3-sidebar w3-bar-block w3-border-right w3-animate-left" style="display:none" id="mySidebar">
+  <button onclick="w3_close()" class="w3-bar-item w3-large">&times;</button>
+  <a href="index.html" class="w3-bar-item w3-button">Home</a>
+  <a href="shoppingCart.html" class="w3-bar-item w3-button"> Items</a>
+  <a href="showorders.html" class="w3-bar-item w3-button">Show Cart</a>
+  </div>
+  <button class="w3-button w3-xlarge" id="hamburger" onclick="w3_open()">☰</button>
+  <!-- End of hamburger nav bar -->
+    <h1 id="welcome">Welcome to your cart</h1>
+    <div id="show" class="container">
+                <table class="table table-striped">
+                    <thead>
+                      <tr>
+                              <th scope="col">Name</th>
+                              <th scope="col">Quantity</th>
+                              <th scope="col">Price</th>
+                              <th scope="col">Gross</th>
+                              <th scope="col" rowspan="*">TOTAL</th>
+                              <th scope="col">Operations</th>
+                      </tr>
+                    </thead>
+            <tbody id="tbdy">
+            </tbody>
+</table>
+<hr> </hr>
+<div class="calculation well">
+  The total price becomes : <span id="calc">Rs.</span> inc gst.
+  <button class="btn btn-success btn-large pull-right" id="placeOrder"> Place Order </button>
+</div>
     </div>
+    <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+  <script src="showorders.js"></script>
+  <script>
+  function w3_open() {
+
+      document.getElementById("mySidebar").style.display = "block";
+  }
+  function w3_close() {
+      document.getElementById("mySidebar").style.display = "none";
+  }
+  </script>
   </body>
 </html>
