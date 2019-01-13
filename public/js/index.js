@@ -230,6 +230,7 @@ function createBox()
   div.appendChild(label);
   var textarea = document.createElement('textarea');
   textarea.setAttribute('id','productBox');
+  textarea.setAttribute('name','textArea');
   textarea.setAttribute('class','form-control');
   textarea.setAttribute('rows','10');
   textarea.setAttribute('cols','10');
