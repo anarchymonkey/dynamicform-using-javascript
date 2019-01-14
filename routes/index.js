@@ -1,6 +1,7 @@
 let express = require('express'),
     app = express.Router(),
-    Store = require('../models/storeProducts.js')
+    Store = require('../models/storeProducts.js'),
+    middleware = require('../middleware/middleware.js')
 
 
 
@@ -26,8 +27,18 @@ app.post('/',(req,res)=>{
         });
 });
 
-app.get('/',(req,res)=>{
-    res.render('index');
+app.get('/',middleware.checkUserAuth,(req,res)=>{
+    Store.find({},(err,storeData)=>{
+        if(err)
+        {
+            console.log(err);
+        }
+        else{
+            console.log(storeData);
+            res.render('index',{storeData : storeData});
+        }
+    });
+    
 });
 
 module.exports = app;

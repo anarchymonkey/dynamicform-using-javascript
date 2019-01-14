@@ -1,7 +1,8 @@
 let express = require('express'),
-    app = express.Router();
+    app = express.Router(),
+    middleware = require('../middleware/middleware.js')
 
-app.get('/cart',(req,res)=>{
+app.get('/cart',middleware.checkUserAuth,(req,res)=>{
     res.render('showorders');
 });
 
