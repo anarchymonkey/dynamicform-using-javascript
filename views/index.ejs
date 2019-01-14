@@ -24,6 +24,11 @@
     </section>
     <section id="section3">
         <ul id="ul" class="w3-animate-right">
+          <% storeData.forEach((data)=>{ %>
+           <li> <%= data.name %>'s price is <%= data.price %> whose quantity is <%= data.quantity %> has description:- <%= data.desc %> </li>
+           <button class="btn btn-warning" id="edit">EDIT</button>
+           <button class="btn btn-danger" id="delete">DELETE</button>
+          <% }) %>
           <div id="desc">
           </div>
         </ul>
