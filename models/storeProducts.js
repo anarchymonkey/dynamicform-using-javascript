@@ -7,9 +7,7 @@ let mongoose = require('mongoose')
         gst : String,
     productId : String,
     desc : String
-
 });
-
 let dbModel = mongoose.model('anikets_cart',dbSchema);
 
 module.exports = dbModel;

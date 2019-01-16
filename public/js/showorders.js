@@ -46,7 +46,7 @@ function calculateAndDisplaySum()
   var calculation = arr.map(object =>{
 
     return object.price * object.quantity*object.gst;
-  });
+      });
 
   sum = calculation.reduce((a,b)=>{return a+b},0);
   showTotal.innerHTML += sum;
