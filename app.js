@@ -6,14 +6,15 @@ const express = require('express'),
       expressSession = require('express-session'),
       passport = require('passport'),
       LocalStrategy = require('passport-local'),
-      removeEverything = require('./clearData.js')
-      //removeEverything();
+      removeEverything = require('./clearData.js'),
+      methodOverride = require('method-override');
+     // removeEverything();
 
 const  home = require('./routes/index.js'),
        itemList = require('./routes/shoppingCart.js'),
        cart = require('./routes/showOrders.js'),
        authentication = require('./routes/authenticate.js')
-            
+
 let app = express();
 app.use(expressSession({
     secret : "Aniket is a nice guy",
