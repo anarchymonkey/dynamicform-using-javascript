@@ -25,7 +25,7 @@ let express = require('express'),
             email : req.body.email
         });
         let password = req.body.password;
-
+        
 
         /* ENTERING THE USERNAME,PASSWORD,EMAIL INTO DATABASE USING MONGOOSE.CREATE(OBJECT,CALLBACK) */
         CustomAuth.register(newUser,password,(err,registered)=>{
